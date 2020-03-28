@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { SearchBar } from 'react-native-elements';
 
-import DrinksList from '../components/DrinksList';
+import { DrinksList } from '../../components/index';
 
-import BASE_URL from '../api/urls';
-import colors from '../constants/colors';
+import BASE_URL from '../../api/urls';
+import colors from '../../constants/colors';
+
+import styles from './styles';
 
 const CocktailsScreen = () => {
   const [isSearchLoading, setIsSearchLoading] = useState(false);
@@ -59,20 +60,5 @@ const CocktailsScreen = () => {
     </LinearGradient>
   );
 };
-
-const styles = StyleSheet.create({
-  screenContainer: {
-    flex: 1,
-    alignItems: 'stretch'
-  },
-  searchBarContainerStyle: {
-    backgroundColor: colors.primary,
-    borderBottomColor: 'transparent',
-    borderTopColor: 'transparent'
-  },
-  inputStyle: {
-    fontFamily: 'Lato-Regular'
-  }
-});
 
 export default CocktailsScreen;

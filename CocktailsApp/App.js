@@ -3,8 +3,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import WelcomeScreen from './screens/WelcomeScreen';
-import CocktailsScreen from './screens/CocktailsScreen';
+import { WelcomeScreen, CocktailsScreen } from './screens/index';
 
 import colors from './constants/colors';
 

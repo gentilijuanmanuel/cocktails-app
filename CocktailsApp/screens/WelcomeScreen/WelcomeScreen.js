@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types';
 
-import colors from '../constants/colors';
-import AppBrand from '../components/AppBrand';
-import SearchButton from '../components/SearchButton';
+import colors from '../../constants/colors';
+import { AppBrand, SearchButton } from '../../components/index';
+
+import styles from './styles';
 
 const WelcomeScreen = ({ navigation }) => {
   const searchCocktailsHandler = () => navigation.navigate('CocktailsScreen');
@@ -23,14 +23,6 @@ const WelcomeScreen = ({ navigation }) => {
     </LinearGradient>
   );
 };
-
-const styles = StyleSheet.create({
-  screenContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-});
 
 WelcomeScreen.propTypes = {
   navigation: PropTypes.object.isRequired
