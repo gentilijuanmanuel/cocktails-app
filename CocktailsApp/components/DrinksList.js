@@ -2,15 +2,18 @@ import React from 'react';
 import {
   ActivityIndicator,
   FlatList,
-  StyleSheet
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 
 import DrinkItem from './DrinkItem';
 
 import colors from '../constants/colors';
 
-const DrinksList = ({ isLoading, response }) => {
-  let display = null;
+const DrinksList = ({ isLoading, enteredValue, response }) => {
+  let display = <Text style={styles.description}>No drinks found :(</Text>;
+
   if (isLoading) {
     display = (
       <ActivityIndicator
@@ -19,7 +22,9 @@ const DrinksList = ({ isLoading, response }) => {
         color={colors.white}
       />
     );
-  } else {
+  } else if (enteredValue === '' || enteredValue.length <= 3) {
+    display = <Text style={styles.description}>Please, enter more than 3 characters in order to perform a search.</Text>;
+  } else if (response && response.drinks) {
     display = (
       <FlatList
         style={styles.drinksFlatView}
@@ -30,15 +35,26 @@ const DrinksList = ({ isLoading, response }) => {
     );
   }
 
-  return display;
+  return <View style={styles.screenContainer}>{display}</View>;
 };
 
 const styles = StyleSheet.create({
+  screenContainer: {
+    flex: 1,
+    justifyContent: 'center'
+  },
   activityIndicatorStyle: {
     margin: 20
   },
   drinksFlatView: {
     flex: 1
+  },
+  description: {
+    color: colors.white,
+    textAlign: 'center',
+    fontSize: 20,
+    fontFamily: 'Lato-Regular',
+    margin: 20
   }
 });
 

@@ -8,23 +8,23 @@ import DrinksList from '../components/DrinksList';
 import BASE_URL from '../api/urls';
 import colors from '../constants/colors';
 
-const CocktailsScreen = (props) => {
-  const [loading, setLoading] = useState(true);
+const CocktailsScreen = () => {
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
   const [drinksResponse, setDrinksResponse] = useState(null);
   const [drinkEnteredValue, setDrinkEnteredValue] = useState('');
 
   useEffect(() => {
-    if (drinkEnteredValue.length > 3 || drinkEnteredValue === '') {
-      setLoading(true);
+    if (drinkEnteredValue.length > 3) {
+      setIsSearchLoading(true);
       fetch(BASE_URL + drinkEnteredValue)
         .then((response) => response.json())
         .then((responseJson) => {
           setDrinksResponse(responseJson);
-          setLoading(false);
+          setIsSearchLoading(false);
         })
         .catch((error) => {
           console.error(error);
-          setLoading(false);
+          setIsSearchLoading(false);
         });
     }
   }, [drinkEnteredValue]);
@@ -46,12 +46,16 @@ const CocktailsScreen = (props) => {
         style={styles.searchBarStyle}
         containerStyle={styles.searchBarContainerStyle}
         inputStyle={styles.inputStyle}
-        showLoading={loading}
+        showLoading={isSearchLoading}
         onCancel={() => updateSearch('')}
         round
         value={drinkEnteredValue}
       />
-      <DrinksList isLoading={loading} response={drinksResponse} />
+      <DrinksList
+        isLoading={isSearchLoading}
+        enteredValue={drinkEnteredValue}
+        response={drinksResponse}
+      />
     </LinearGradient>
   );
 };
