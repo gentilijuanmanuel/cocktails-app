@@ -20,7 +20,7 @@ const CocktailsScreen = () => {
       fetch(BASE_URL + drinkEnteredValue)
         .then((response) => response.json())
         .then((responseJson) => {
-          setDrinksResponse(responseJson);
+          setDrinksResponse(responseJson.drinks);
           setIsSearchLoading(false);
         })
         .catch((error) => {
@@ -55,7 +55,7 @@ const CocktailsScreen = () => {
       <DrinksList
         isLoading={isSearchLoading}
         enteredValue={drinkEnteredValue}
-        response={drinksResponse}
+        drinks={drinksResponse}
       />
     </LinearGradient>
   );

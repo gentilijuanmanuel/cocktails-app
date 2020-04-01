@@ -10,7 +10,7 @@ import { DrinkItem } from '../index';
 import colors from '../../constants/colors';
 import styles from './styles';
 
-const DrinksList = ({ isLoading, enteredValue, response }) => {
+const DrinksList = ({ isLoading, enteredValue, drinks }) => {
   let display = <Text style={styles.description}>No drinks found :(</Text>;
 
   if (isLoading) {
@@ -23,11 +23,11 @@ const DrinksList = ({ isLoading, enteredValue, response }) => {
     );
   } else if (enteredValue === '' || enteredValue.length <= 3) {
     display = <Text style={styles.description}>Please, enter more than 3 characters in order to perform a search.</Text>;
-  } else if (response && response.drinks) {
+  } else if (drinks != null) {
     display = (
       <FlatList
         style={styles.drinksFlatView}
-        data={response.drinks}
+        data={drinks}
         keyExtractor={(drink) => drink.idDrink}
         renderItem={(drink) => <DrinkItem drink={drink} />}
       />
