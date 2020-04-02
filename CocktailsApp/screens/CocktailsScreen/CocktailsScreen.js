@@ -1,36 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import { SearchBar } from 'react-native-elements';
+import { connect } from 'react-redux';
+
+import { setDrinkEnteredValue, fetchDrinks } from '../../actions/actionCreators';
 
 import { DrinksList } from '../../components/index';
 
-import BASE_URL from '../../api/urls';
 import colors from '../../constants/colors';
 
 import styles from './styles';
 
-const CocktailsScreen = () => {
-  const [isSearchLoading, setIsSearchLoading] = useState(false);
-  const [drinksResponse, setDrinksResponse] = useState(null);
-  const [drinkEnteredValue, setDrinkEnteredValue] = useState('');
-
+const CocktailsScreen = ({
+  isLoading, drinkEnteredValue, drinks, setDrinkEnteredValueHandler, fetchDrinksHandler
+}) => {
   useEffect(() => {
     if (drinkEnteredValue.length > 3) {
-      setIsSearchLoading(true);
-      fetch(BASE_URL + drinkEnteredValue)
-        .then((response) => response.json())
-        .then((responseJson) => {
-          setDrinksResponse(responseJson.drinks);
-          setIsSearchLoading(false);
-        })
-        .catch((error) => {
-          console.error(error);
-          setIsSearchLoading(false);
-        });
+      fetchDrinksHandler(drinkEnteredValue);
     }
   }, [drinkEnteredValue]);
 
-  const updateSearch = (searchValue) => setDrinkEnteredValue(searchValue);
+  const updateSearch = (searchValue) => setDrinkEnteredValueHandler(searchValue);
 
   return (
     <LinearGradient
@@ -47,18 +37,29 @@ const CocktailsScreen = () => {
         style={styles.searchBarStyle}
         containerStyle={styles.searchBarContainerStyle}
         inputStyle={styles.inputStyle}
-        showLoading={isSearchLoading}
+        showLoading={isLoading}
         onCancel={() => updateSearch('')}
         round
         value={drinkEnteredValue}
       />
       <DrinksList
-        isLoading={isSearchLoading}
+        isLoading={isLoading}
         enteredValue={drinkEnteredValue}
-        drinks={drinksResponse}
+        drinks={drinks}
       />
     </LinearGradient>
   );
 };
 
-export default CocktailsScreen;
+const mapStateToProps = (state) => ({
+  isLoading: state.isLoading,
+  drinkEnteredValue: state.drinkEnteredValue,
+  drinks: state.drinks
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setDrinkEnteredValueHandler: (drinkEnteredValue) => dispatch(setDrinkEnteredValue(drinkEnteredValue)),
+  fetchDrinksHandler: (drinkEnteredValue) => dispatch(fetchDrinks(drinkEnteredValue))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CocktailsScreen);
